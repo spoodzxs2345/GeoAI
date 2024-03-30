@@ -45,9 +45,12 @@ if upload:
     sys_prompt = f'You are profficient in geography. You are tasked to do the following: {prompt}. Add some geographic facts about the image above.'
 
     if st.button('Generate'):
-        model = genai.GenerativeModel(model_name='gemini-1.0-pro-vision-latest',
-                                      generation_config=generation_config,
-                                      safety_settings=safety_settings)
-        response = model.generate_content([sys_prompt, image])
+        try:
+            model = genai.GenerativeModel(model_name='gemini-1.0-pro-vision-latest',
+                                        generation_config=generation_config,
+                                        safety_settings=safety_settings)
+            response = model.generate_content([sys_prompt, image])
 
-        st.markdown(response.text)
+            st.markdown(response.text)
+        except ValueError:
+            st.error('The prompt you entered does not seem to abide by the safety settings. Please try again.')
